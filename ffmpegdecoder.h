@@ -30,13 +30,13 @@ class FFmpegDecoder
 {
     public:
         FFmpegDecoder(std::string);
-
         ~FFmpegDecoder();
 
         void connect();
-        void playMedia();
+        void decode();
 
         bool isConncected() const {return bConnected;}
+
     private:
 
         void destroy();

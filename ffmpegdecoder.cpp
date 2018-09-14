@@ -113,7 +113,7 @@ void FFmpegDecoder::connect()
     bConnected = true;
 }
 
-void FFmpegDecoder::playMedia()
+void FFmpegDecoder::decode()
 {
     std::chrono::milliseconds duration(2);
 

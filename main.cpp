@@ -3,14 +3,12 @@
 
 int main()
 {
-    //this is example... write your own rtsp address
-    FFmpegDecoder decoder("rtsp://admin:guest@192.168.3.17:554/udp/unicast/Profile_H264_1");
+    FFmpegDecoder decoder("your rtsp address");
 
     decoder.connect();
     if(decoder.isConncected())
     {
-        std::thread t1{&FFmpegDecoder::playMedia, &decoder};
-
+        std::thread t1{&FFmpegDecoder::decode, &decoder};
 
         t1.join();
     }
