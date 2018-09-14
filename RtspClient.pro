@@ -7,7 +7,7 @@ CONFIG -= qt
 INCLUDEPATH += /usr/local/include/opencv
 LIBS += -L/usr/local/lib -lopencv_core -lopencv_imgcodecs -lopencv_highgui -lopencv_videoio
 
-INCLUDEPATH += -L/usr/include/
+INCLUDEPATH += /usr/include/
 LIBS += -L/usr/lib/aarch64-linux-gnu -lpthread -lavcodec  -lavformat  -lavutil  -lswscale -lswresample -lavdevice -lavfilter
 
 SOURCES += main.cpp \
