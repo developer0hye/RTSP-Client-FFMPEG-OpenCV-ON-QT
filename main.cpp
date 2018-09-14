@@ -6,6 +6,7 @@ int main()
     FFmpegDecoder decoder("your rtsp address");
 
     decoder.connect();
+
     if(decoder.isConncected())
     {
         std::thread t1{&FFmpegDecoder::decode, &decoder};
