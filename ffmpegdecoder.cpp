@@ -8,6 +8,7 @@
 
 #include "ffmpegdecoder.h"
 
+using namespace std;
 
 FFmpegDecoder::FFmpegDecoder(std::string path)
     :bConnected(false)
@@ -24,7 +25,6 @@ void FFmpegDecoder::connect()
 {
     avformat_network_init();
     av_register_all();
-
 
     pFormatCtx = avformat_alloc_context();
 
@@ -97,14 +97,14 @@ void FFmpegDecoder::connect()
     pFrameBGR = av_frame_alloc();
 
 
-    img_convert_ctx = sws_getContext(pCodecCtx->width, pCodecCtx->height,
+    imgConvertCtx = sws_getContext(pCodecCtx->width, pCodecCtx->height,
                                      pCodecCtx->pix_fmt, pCodecCtx->width, pCodecCtx->height,
                                      AV_PIX_FMT_BGR24, SWS_BICUBIC, NULL, NULL, NULL);
 
     int numBytes = avpicture_get_size(AV_PIX_FMT_BGR24, pCodecCtx->width,pCodecCtx->height);
 
-    out_buffer = (uint8_t *) av_malloc(numBytes * sizeof(uint8_t));
-    avpicture_fill((AVPicture *) pFrameBGR, out_buffer, AV_PIX_FMT_BGR24,
+    outBuffer = (uint8_t *) av_malloc(numBytes * sizeof(uint8_t));
+    avpicture_fill((AVPicture *) pFrameBGR, outBuffer, AV_PIX_FMT_BGR24,
                    pCodecCtx->width, pCodecCtx->height);
 
     packet = (AVPacket *) malloc(sizeof(AVPacket));
@@ -115,7 +115,7 @@ void FFmpegDecoder::connect()
 
 void FFmpegDecoder::decode()
 {
-    std::chrono::milliseconds duration(2);
+    std::chrono::milliseconds duration(5);
 
     while (av_read_frame(pFormatCtx, packet) >= 0)
     {
@@ -132,28 +132,31 @@ void FFmpegDecoder::decode()
 
             if (got_picture)
             {
-                sws_scale(img_convert_ctx,
+                sws_scale(imgConvertCtx,
                           (uint8_t const * const *) pFrame->data,
                           pFrame->linesize, 0, pCodecCtx->height, pFrameBGR->data,
                           pFrameBGR->linesize);
 
-                cv::Mat img(pFrame->height,pFrame->width,CV_8UC3,pFrameBGR->data[0]);
-                cv::imshow("display",img);
-                cv::waitKeyEx(10);
+                cv::Mat img(pFrame->height,
+                            pFrame->width,
+                            CV_8UC3,
+                            pFrameBGR->data[0]);
+
+                mtx.lock();
+                decodedImgBuf.push_back(img);
+                mtx.unlock();
             }
         }
         av_free_packet(packet);
         std::this_thread::sleep_for(duration);
     }
-
     bConnected = false;
 }
 
 void FFmpegDecoder::destroy()
 {
-    av_free(out_buffer);
+    av_free(outBuffer);
     av_free(pFrameBGR);
     avcodec_close(pCodecCtx);
     avformat_close_input(&pFormatCtx);
 }
-

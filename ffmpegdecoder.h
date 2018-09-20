@@ -13,6 +13,7 @@
 #include <string>
 
 #include <thread>
+#include <mutex>
 #include <chrono>
 
 #include <opencv2/opencv.hpp>
@@ -24,6 +25,7 @@ extern "C"
 #include <libswscale/swscale.h>
 #include <libavutil/pixdesc.h>
 #include <libavdevice/avdevice.h>
+
 }
 
 class FFmpegDecoder
@@ -37,6 +39,9 @@ class FFmpegDecoder
 
         bool isConncected() const {return bConnected;}
 
+        std::deque <cv::Mat> decodedImgBuf;
+        std::mutex mtx;
+
     private:
 
         void destroy();
@@ -46,8 +51,8 @@ class FFmpegDecoder
         AVCodec *pCodec;
         AVFrame *pFrame, *pFrameBGR;
         AVPacket *packet;
-        uint8_t *out_buffer;
-        SwsContext *img_convert_ctx;
+        uint8_t *outBuffer;
+        SwsContext *imgConvertCtx;
 
         int videoStream;
 
