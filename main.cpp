@@ -23,7 +23,7 @@ void ImageProc::process(FFmpegDecoder &decoder)
         decoder.mtx.lock();
         if(!decoder.decodedImgBuf.empty())
         {
-            src = decoder.decodedImgBuf.front();
+            src = decoder.decodedImgBuf.front().clone();
             decoder.decodedImgBuf.pop_front();
            // std::cout <<"img buffer size = "<< decoder.decodedImgBuf.size() << std::endl;
         }
