@@ -32,8 +32,7 @@ void ImageProc::process(FFmpegDecoder &decoder)
             //do your stuff...
 
             //
-
-
+            
             cv::imshow("src", src);
             cv::waitKey(10);
             
