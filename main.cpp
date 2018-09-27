@@ -36,6 +36,8 @@ void ImageProc::process(FFmpegDecoder &decoder)
 
             cv::imshow("src", src);
             cv::waitKey(10);
+            
+            src.release();
         }
     }
 }
