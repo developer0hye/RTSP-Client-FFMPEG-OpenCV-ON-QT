@@ -16,8 +16,6 @@ void ImageProc::process(FFmpegDecoder &decoder)
 {
     while(decoder.isConncected())
     {
-        std::chrono::milliseconds duration(2);
-
         cv::Mat src;
 
         decoder.mtx.lock();
@@ -39,8 +37,6 @@ void ImageProc::process(FFmpegDecoder &decoder)
             cv::imshow("src", src);
             cv::waitKey(10);
         }
-
-        std::this_thread::sleep_for(duration);
     }
 }
 
