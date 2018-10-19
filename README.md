@@ -1,5 +1,17 @@
 # RTSP-Client-FFMPEG-OpenCV-ON-QT
 
+## Prerequisite
+Install libraries to use ffmpeg
+```
+sudo apt-get install libavcodec-dev
+sudo apt-get install libavformat-dev
+sudo apt-get install libavutil-dev
+sudo apt-get install libswscale-dev
+sudo apt-get install libswresample-dev
+sudo apt-get install libavdevice-dev
+sudo apt-get install libavfilter-dev
+```
+
 if you want to process only a image except a packet, you can easily process a image by using the below code.
 
 ```
