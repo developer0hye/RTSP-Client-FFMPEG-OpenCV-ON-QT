@@ -11,7 +11,10 @@ sudo apt-get install libswresample-dev
 sudo apt-get install libavdevice-dev
 sudo apt-get install libavfilter-dev
 ```
-
+Install qtcreator
+```
+sudo apt-get install qtcreator
+```
 if you want to process only a image except a packet, you can easily process a image by using the below code.
 
 ```
